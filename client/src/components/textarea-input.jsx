@@ -1,3 +1,6 @@
+import React from "react"
+
+
 export default function TextareaInput({ value, onChange, placeholder, readOnly, className }) {
   return (
     <textarea

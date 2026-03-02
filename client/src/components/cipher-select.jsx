@@ -1,3 +1,4 @@
+import React from "react"
 
 
 export default function CipherSelect({ value, onChange }) {
@@ -8,8 +9,7 @@ export default function CipherSelect({ value, onChange }) {
       className="w-full px-3 py-2 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
     >
       <option value="caesar">Caesar</option>
-      <option value="rot13">ROT13</option>
-      <option value="atbash">Atbash</option>
+      <option value="affine">Affine</option>
       <option value="vigenere">Vigenère</option>
     </select>
   )
