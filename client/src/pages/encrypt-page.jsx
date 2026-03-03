@@ -36,9 +36,17 @@ export default function EncryptPage() {
         data.key = key
       }
 
-      const res = await encrypt(data)
-      console.log("RES:", res)
-      setResult(res.result.result)
+    const res = await encrypt(data)
+console.log("RES:", res)
+
+const output =
+  res?.result?.result ??
+  res?.result ??
+  res?.data?.result ??
+  res?.error ??
+  ""
+
+setResult(String(output))
 
     } catch (error) {
       console.error("Encryption failed:", error)
@@ -138,8 +146,10 @@ export default function EncryptPage() {
         />
 
         <div className="flex justify-between text-sm text-gray-500 mt-4 pt-4 border-t">
-          <span>Chars: {result.length}</span>
-          <span>Words: {result.trim() ? result.split(/\s+/).filter((w) => w).length : 0}</span>
+          <span>Chars: {result ? result.length : 0}</span>
+          <span>
+          Words: {result ? result.trim().split(/\s+/).filter((w) => w).length : 0}
+          </span>
         </div>
       </Card>
 
