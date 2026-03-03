@@ -4,11 +4,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
-from feature_extractor import extract_features
+from feature_extractor import CipherFeatureExtractor
+
+extractor = CipherFeatureExtractor()
 
 df = pd.read_csv("cipher_dataset.csv")
 
-X = df["ciphertext"].apply(extract_features).tolist()
+X = df["ciphertext"].apply(extractor.extract_features).tolist()
 y = df["label"]
 
 X_train, X_test, y_train, y_test = train_test_split(
