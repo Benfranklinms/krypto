@@ -34,10 +34,6 @@ def vigenere_encrypt(text, key):
     return result
 
 
-# =========================
-# 📖 English Corpus Loader
-# =========================
-
 def load_corpus():
     corpus_path = Path("english_corpus.txt")
 
@@ -77,19 +73,18 @@ def create_dataset(samples_per_cipher=5000):
         for _ in range(samples_per_cipher):
 
             plaintext = get_random_chunk(corpus)
-
-            # 🔹 Caesar
             shift = random.randint(1, 25)
             ciphertext = caesar_encrypt(plaintext, shift)
             writer.writerow([ciphertext, "caesar"])
-
-            # 🔹 Affine
+            
+            
             a = random.choice(valid_a)
             b = random.randint(0, 25)
             ciphertext = affine_encrypt(plaintext, a, b)
             writer.writerow([ciphertext, "affine"])
 
-            # 🔹 Vigenere
+
+
             key_length = random.randint(3, 10)
             key = ''.join(random.choices(string.ascii_uppercase, k=key_length))
             ciphertext = vigenere_encrypt(plaintext, key)
