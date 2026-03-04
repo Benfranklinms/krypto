@@ -20,14 +20,21 @@ def auto_decrypt(ciphertext):
 
     cipher_type = identify_cipher(ciphertext)
 
+    result = None
+
     if cipher_type == "caesar":
         result = break_caesar(ciphertext)
 
     elif cipher_type == "affine":
         result = break_affine(ciphertext)
 
-    elif cipher_type == "vigenere":
-        result = break_vigenere(ciphertext)
+    # elif cipher_type == "vigenere":
+    #     result = break_vigenere(ciphertext)
+
+    else:
+        return {
+            "error": f"Unsupported cipher type: {cipher_type}"
+        }
 
     return {
         "cipher": cipher_type,
