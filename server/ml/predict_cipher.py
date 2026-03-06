@@ -14,3 +14,5 @@ if __name__ == "__main__":
     text = input("Enter ciphertext: ").upper()
     cipher_type = predict_cipher(text)
     print("Predicted cipher:", cipher_type)
+    
+#cahnges needed
