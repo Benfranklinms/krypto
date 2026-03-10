@@ -1,4 +1,4 @@
-from break_caesar import chi_square
+from services.break_caesar import chi_square
 import wordninja
 
 
@@ -71,7 +71,3 @@ def break_affine(ciphertext):
         "key": best_key,
         "plaintext": best_plain
     }
-
-
-result = break_affine("Zrckewsgnpaovhatbeqfuajcp13lidyxamu")
-print(result["key"], result["plaintext"])

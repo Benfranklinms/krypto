@@ -81,6 +81,3 @@ def break_caesar(ciphertext):
         "key": best_key,
         "plaintext": best_plain
     }
-
-result=break_caesar("Bptggtabwxmaxmknma".upper())
-print(result["key"],result["plaintext"])
