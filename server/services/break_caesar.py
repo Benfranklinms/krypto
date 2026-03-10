@@ -1,4 +1,6 @@
 import string
+import wordninja
+
 
 # English letter frequency
 ENGLISH_FREQ = {
@@ -12,7 +14,9 @@ ENGLISH_FREQ = {
 }
 
 
+# Caesar decryption
 def decrypt_caesar(text, shift):
+
     result = ""
 
     for char in text:
@@ -22,12 +26,14 @@ def decrypt_caesar(text, shift):
     return result
 
 
+# Chi-square frequency score
 def chi_square(text):
 
     N = len(text)
     score = 0
 
     for letter in string.ascii_uppercase:
+
         observed = text.count(letter)
         expected = ENGLISH_FREQ[letter] * N / 100
 
@@ -36,6 +42,19 @@ def chi_square(text):
     return score
 
 
+# WordNinja word quality score
+def word_score(text):
+
+    words = wordninja.split(text.lower())
+
+    if len(words) == 0:
+        return 0
+
+    # average word length
+    return sum(len(w) for w in words) / len(words)
+
+
+# Hybrid Caesar breaker
 def break_caesar(ciphertext):
 
     best_score = float("inf")
@@ -45,10 +64,16 @@ def break_caesar(ciphertext):
     for shift in range(26):
 
         plaintext = decrypt_caesar(ciphertext, shift)
-        score = chi_square(plaintext)
 
-        if score < best_score:
-            best_score = score
+        chi = chi_square(plaintext)
+        word_quality = word_score(plaintext)
+
+        # combine scores
+        final_score = chi - (word_quality * 5)
+        
+        if final_score < best_score:
+
+            best_score = final_score
             best_plain = plaintext
             best_key = shift
 
@@ -56,3 +81,6 @@ def break_caesar(ciphertext):
         "key": best_key,
         "plaintext": best_plain
     }
+
+result=break_caesar("Bptggtabwxmaxmknma".upper())
+print(result["key"],result["plaintext"])
