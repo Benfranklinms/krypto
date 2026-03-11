@@ -50,8 +50,10 @@ def word_score(text):
     if len(words) == 0:
         return 0
 
-    # average word length
-    return sum(len(w) for w in words) / len(words)
+    avg_len = sum(len(w) for w in words) / len(words)
+    coverage = sum(len(w) for w in words) / len(text)
+
+    return avg_len * coverage
 
 
 # Hybrid Caesar breaker
