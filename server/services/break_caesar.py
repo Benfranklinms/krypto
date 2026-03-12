@@ -79,7 +79,7 @@ def break_caesar(ciphertext):
 
             best_score = final_score
             best_plain = plaintext
-            best_key = (shift - 6) % 26
+            best_key = shift
     
     words = wordninja.split(best_plain.lower())
     sentence = " ".join(words).upper()
