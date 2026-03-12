@@ -62,6 +62,8 @@ def break_caesar(ciphertext):
     best_score = float("inf")
     best_plain = ""
     best_key = 0
+    ciphertext = ''.join(c for c in ciphertext if c.isalpha()).upper()
+    best_score = float("inf")
 
     for shift in range(26):
 
@@ -78,8 +80,12 @@ def break_caesar(ciphertext):
             best_score = final_score
             best_plain = plaintext
             best_key = shift
+    
+    words = wordninja.split(best_plain.lower())
+    sentence = " ".join(words).upper()
+
 
     return {
         "key": best_key,
-        "plaintext": best_plain
+        "plaintext": sentence
     }

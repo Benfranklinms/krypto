@@ -4,20 +4,36 @@ import { Button } from "../components/ui/button"
 import TextareaInput from "../components/textarea-input"
 
 export default function DecryptPage() {
-  const [ciphertext, setCiphertext] = useState("LXFOPVEFRHHR")
+  const [ciphertext, setCiphertext] = useState("")
   const [showStats, setShowStats] = useState(true)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analysisComplete, setAnalysisComplete] = useState(false)
-  const [predictedCipher, setPredictedCipher] = useState("Vigenère")
+  const [predictedCipher, setPredictedCipher] = useState("")
   const [confidence, setConfidence] = useState(97)
   const [decryptedText, setDecryptedText] = useState(
     "THIS IS A SECRET MESSAGE THAT HAS BEEN ENCRYPTED USING THE VIGENERE CIPHER. THE KEY USED WAS QUITE SHORT BUT IT WAS ENOUGH TO HIDE THE MEANING FROM A SIMPLE FREQUENCY ANALYSIS. HOWEVER, WITH MODERN COMPUTATIONAL TOOLS, BREAKING IT IS TRIVIAL.",
   )
   const [recoveredKey, setRecoveredKey] = useState("CRYPTO")
 
+const handleDecrypt = async () => {
+  try {
+
+    const data = {
+      ciphertext: ciphertext
+    }
+
+    const res = await decrypt(data)
+
+    console.log(res)
+
+  } catch (error) {
+    console.error("Decrypt error:", error)
+  }
+}
+
   const cipherProbabilities = [
     { name: "Vigenère", prob: 0.87 },
-    { name: "Beaufort", prob: 0.08 },
+    { name: "Affine", prob: 0.08 },
     { name: "Caesar", prob: 0.03 },
   ]
 
