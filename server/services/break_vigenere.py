@@ -1,67 +1,41 @@
-from break_caesar import break_caesar
-import wordninja
-from math import gcd
-from functools import reduce
+from collections import Counter
+from services.break_caesar import break_caesar
+from utils.quadgrams.quadgram_score import QuadgramScore
 
 
-# -----------------------------
-# Index of Coincidence
-# -----------------------------
+def clean_text(text):
+
+    return ''.join(c for c in text.upper() if c.isalpha())
+
+
 def index_of_coincidence(text):
-
     N = len(text)
-
-    if N <= 1:
-        return 0
-
-    freq = {}
-
-    for c in text:
-        freq[c] = freq.get(c, 0) + 1
-
-    ic = 0
-
-    for f in freq.values():
-        ic += f * (f - 1)
-
-    return ic / (N * (N - 1))
+    freq = Counter(text)
+    ic = sum(f * (f - 1) for f in freq.values())
+    return ic / (N * (N - 1)) if N > 1 else 0
 
 
-# -----------------------------
-# Kasiski Examination
-# -----------------------------
 def kasiski(ciphertext):
-
-    ciphertext = ''.join(c for c in ciphertext if c.isalpha())
-
     distances = []
-
     for i in range(len(ciphertext) - 3):
-
         seq = ciphertext[i:i+3]
-
         for j in range(i + 3, len(ciphertext) - 3):
-
             if ciphertext[j:j+3] == seq:
                 distances.append(j - i)
-
-    if not distances:
-        return []
 
     factors = []
 
     for d in distances:
+
         for i in range(2, 21):
+
             if d % i == 0:
                 factors.append(i)
 
     return list(set(factors))
 
 
-# -----------------------------
-# Key Length Candidates
-# -----------------------------
-def possible_key_lengths(ciphertext, max_len=12):
+def candidate_key_lengths(ciphertext, max_len=20):
 
     kasiski_lengths = kasiski(ciphertext)
 
@@ -71,10 +45,8 @@ def possible_key_lengths(ciphertext, max_len=12):
 
         columns = [''] * k
 
-        for i, char in enumerate(ciphertext):
-
-            if char.isalpha():
-                columns[i % k] += char
+        for i, c in enumerate(ciphertext):
+            columns[i % k] += c
 
         avg_ic = sum(index_of_coincidence(col) for col in columns) / k
 
@@ -82,100 +54,61 @@ def possible_key_lengths(ciphertext, max_len=12):
 
     scores.sort(key=lambda x: x[1], reverse=True)
 
-    ic_lengths = [k for k, _ in scores[:5]]
+    ic_lengths = [k for k, _ in scores[:6]]
 
     return list(set(ic_lengths + kasiski_lengths))
 
 
-# -----------------------------
-# Split Columns
-# -----------------------------
-def split_columns(ciphertext, key_length):
+def split_columns(text, key_len):
 
-    columns = [""] * key_length
+    cols = [''] * key_len
 
-    for i, char in enumerate(ciphertext):
+    for i, c in enumerate(text):
 
-        if char.isalpha():
-            columns[i % key_length] += char
+        cols[i % key_len] += c
 
-    return columns
+    return cols
 
 
-# -----------------------------
-# Recover Key
-# -----------------------------
-def find_key(ciphertext, key_length):
+def find_key(ciphertext, key_len):
 
-    columns = split_columns(ciphertext, key_length)
+    cols = split_columns(ciphertext, key_len)
 
     key = ""
 
-    for col in columns:
-
-        result = break_caesar(col)
-
-        shift = result["key"]
-
+    for col in cols:
+        result=break_caesar(col)
+        shift=result["key"] 
         key += chr(shift + 65)
-
     return key
 
 
-# -----------------------------
-# Decrypt Vigenère
-# -----------------------------
 def decrypt_vigenere(ciphertext, key):
 
     plaintext = ""
-    key_len = len(key)
-    key_index = 0
 
-    for char in ciphertext:
+    for i, c in enumerate(ciphertext):
 
-        if char.isalpha():
+        shift = ord(key[i % len(key)]) - 65
 
-            shift = ord(key[key_index % key_len]) - 65
-            x = ord(char) - 65
+        x = ord(c) - 65
 
-            plaintext += chr((x - shift) % 26 + 65)
-
-            key_index += 1
-
-        else:
-            plaintext += char
+        plaintext += chr((x - shift) % 26 + 65)
 
     return plaintext
 
 
-# -----------------------------
-# Word Score using WordNinja
-# -----------------------------
-def word_score(text):
-
-    words = wordninja.split(text.lower())
-
-    if len(words) == 0:
-        return 0
-
-    avg_len = sum(len(w) for w in words) / len(words)
-    coverage = sum(len(w) for w in words) / len(text)
-
-    return avg_len * coverage
-
-
-# -----------------------------
-# Break Vigenère
-# -----------------------------
 def break_vigenere(ciphertext):
 
-    ciphertext = ciphertext.upper()
+    ciphertext = clean_text(ciphertext)
 
-    key_lengths = possible_key_lengths(ciphertext)
+    quad = QuadgramScore()
 
-    best_plain = ""
+    key_lengths = candidate_key_lengths(ciphertext)
+
+    best_score = float("-inf")
     best_key = ""
-    best_score = -1
+    best_plain = ""
 
     for klen in key_lengths:
 
@@ -183,13 +116,13 @@ def break_vigenere(ciphertext):
 
         plaintext = decrypt_vigenere(ciphertext, key)
 
-        score = word_score(plaintext)
+        score = quad.score(plaintext)
 
         if score > best_score:
 
             best_score = score
-            best_plain = plaintext
             best_key = key
+            best_plain = plaintext
 
     return {
         "key": best_key,
@@ -197,9 +130,5 @@ def break_vigenere(ciphertext):
     }
 
 
-# -----------------------------
-# Test
-# -----------------------------
-result = break_vigenere("Vycfnqkmspdpvnqohjfxaqmcgeihaumvl".upper())
-
-print(result["key"], result["plaintext"])
+result=break_vigenere("WSBOVLMSKZYRSRECCQDIKCVCVCFOETSPWYRAYQNVIVKPEYVGDLKCXFKXMZIPKXCCMJORRVCZOLGXHSCIPSRROVDKGCCAFSPCWELKKGXKBKXYCXMBEEOGMWQSXMAKXGYRNBSRYGMVWYXHQOGSBMRIQCMLYXMQWWBOZCVSNOVQWYQDFYVELMINOVDYVKKRAOWAKPYLMJSXWKRBBIJSEZSPGDCURILNIQSKLSRECSDDAYBIYBGFSXCMXSBIQ")
+print("Key: ",result["key"],"\n",result["plaintext"])
