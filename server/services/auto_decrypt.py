@@ -3,6 +3,7 @@ from ml.feature_extractor import CipherFeatureExtractor
 
 from services.break_caesar import break_caesar
 from services.break_affine import break_affine
+from services.break_vigenere import break_vigenere
 
 Extractor = CipherFeatureExtractor()
 
@@ -28,8 +29,8 @@ def auto_decrypt(ciphertext):
     elif cipher_type == "affine":
         result = break_affine(ciphertext)
 
-    # elif cipher_type == "vigenere":
-    #     result = break_vigenere(ciphertext)
+    elif cipher_type == "vigenere":
+        result = break_vigenere(ciphertext)
 
     else:
         return {
