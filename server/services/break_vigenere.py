@@ -1,10 +1,10 @@
 from collections import Counter
 from services.break_caesar import break_caesar
 from utils.quadgrams.quadgram_score import QuadgramScore
+import wordninja
 
 
 def clean_text(text):
-
     return ''.join(c for c in text.upper() if c.isalpha())
 
 
@@ -16,10 +16,14 @@ def index_of_coincidence(text):
 
 
 def kasiski(ciphertext):
+
     distances = []
+
     for i in range(len(ciphertext) - 3):
         seq = ciphertext[i:i+3]
+
         for j in range(i + 3, len(ciphertext) - 3):
+
             if ciphertext[j:j+3] == seq:
                 distances.append(j - i)
 
@@ -64,7 +68,6 @@ def split_columns(text, key_len):
     cols = [''] * key_len
 
     for i, c in enumerate(text):
-
         cols[i % key_len] += c
 
     return cols
@@ -77,28 +80,41 @@ def find_key(ciphertext, key_len):
     key = ""
 
     for col in cols:
-        result=break_caesar(col)
-        shift=result["key"] 
+
+        result = break_caesar(col)
+
+        shift = result["key"]
+
         key += chr(shift + 65)
+
     return key
 
 
 def decrypt_vigenere(ciphertext, key):
 
     plaintext = ""
+    key_index = 0
 
-    for i, c in enumerate(ciphertext):
+    for c in ciphertext:
 
-        shift = ord(key[i % len(key)]) - 65
+        if c.isalpha():
 
-        x = ord(c) - 65
+            shift = ord(key[key_index % len(key)]) - 65
+            x = ord(c.upper()) - 65
 
-        plaintext += chr((x - shift) % 26 + 65)
+            plaintext += chr((x - shift) % 26 + 65)
+
+            key_index += 1
+
+        else:
+            plaintext += c
 
     return plaintext
 
 
 def break_vigenere(ciphertext):
+
+    original_text = ciphertext
 
     ciphertext = clean_text(ciphertext)
 
@@ -124,7 +140,10 @@ def break_vigenere(ciphertext):
             best_key = key
             best_plain = plaintext
 
+    # Add word segmentation for readability
+    spaced_plain = " ".join(wordninja.split(best_plain.lower())).upper()
+
     return {
         "key": best_key,
-        "plaintext": best_plain
+        "plaintext": spaced_plain
     }
