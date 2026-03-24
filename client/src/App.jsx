@@ -1,63 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-import axios from "axios";
-
-const API_BASE = "http://127.0.0.1:5000/api/cipher";
-
-// ─── Backend Encryption ───────────────────────────────────────────────────
-const backendEncrypt = async ({ text, algorithm, key, keys }) => {
-  try {
-    const payload = {
-      cipher: algorithm,
-      text: text,
-    };
-
-    if (algorithm === "caesar") {
-      payload.shift = parseInt(key, 10) || 3;
-    } else if (algorithm === "vigenere") {
-      payload.key = key;
-    } else if (algorithm === "affine") {
-      payload.a = parseInt(keys.a, 10) || 5;
-      payload.b = parseInt(keys.b, 10) || 8;
-    }
-
-    const res = await axios.post(`${API_BASE}/encrypt`, payload);
-    return { result: res.data.result || res.data.result };
-  } catch (error) {
-    console.error("Backend encrypt error:", error);
-    return { error: "Encryption failed. Make sure backend is running." };
-  }
-};
-
-// ─── Backend Decryption ───────────────────────────────────────────────────
-const backendDecrypt = async ({ text }) => {
-  try {
-    const res = await axios.post(`${API_BASE}/decrypt`, { ciphertext: text });
-    return {
-      result: res.data.plaintext || res.data.result || "",
-      stats: {
-        predictedCipher: res.data.cipher || "Unknown",
-        probability: 85,
-        ciphers: [
-          { name: res.data.cipher || "Caesar", score: 0.91 },
-          { name: "Affine", score: 0.54 },
-          { name: "Vigenere", score: 0.38 },
-        ],
-        radar: {
-          avgLetterFreq: 60,
-          indexOfCoincidence: 70,
-          entropy: 45,
-          bigramFreq: 80,
-          repetitionScore: 55,
-          varianceOfFreq: 50,
-        },
-      },
-    };
-  } catch (error) {
-    console.error("Backend decrypt error:", error);
-    return { error: "Decryption failed. Make sure backend is running." };
-  }
-};
+import { backendDecrypt, backendEncrypt } from "./api/cipher";
 
 // ─── Cipher config ────────────────────────────────────────────────────────
 const CIPHERS = [
@@ -120,10 +63,11 @@ function RadarChart({ data }) {
   const radius = 60;
   const cx = 100;
   const cy = 100;
-  const metrics = Object.entries(data).map(([key, val], i) => ({
+  const entries = Object.entries(data);
+  const metrics = entries.map(([key, val], i) => ({
     label: key.replace(/([A-Z])/g, " $1").trim(),
     value: Math.max(0, Math.min(100, val)),
-    angle: (i / 6) * Math.PI * 2,
+    angle: (i / entries.length) * Math.PI * 2,
   }));
 
   const points = metrics.map((m) => ({
@@ -157,8 +101,8 @@ function RadarChart({ data }) {
         />
       ))}
       {metrics.map((m, i) => {
-        const x = cx + (radius * 1.2 * Math.cos(m.angle - Math.PI / 2)) / 100;
-        const y = cy + (radius * 1.2 * Math.sin(m.angle - Math.PI / 2)) / 100;
+        const x = cx + radius * 1.25 * Math.cos(m.angle - Math.PI / 2);
+        const y = cy + radius * 1.25 * Math.sin(m.angle - Math.PI / 2);
         return (
           <text
             key={i}
@@ -208,13 +152,18 @@ function TypedText({ text, speed = 14 }) {
 const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 
 function DecryptingOverlay({ inputText }) {
-  const [lines, setLines] = useState([]);
+  const [lines, setLines] = useState(() =>
+    Array.from({ length: 5 }, () => ({
+      current: "",
+      target: "",
+    }))
+  );
   useEffect(() => {
+    void inputText;
     const newLines = Array.from({ length: 5 }, () => ({
       current: "",
       target: "",
     }));
-    setLines(newLines);
 
     const intervals = newLines.map((line) => {
       const len = Math.floor(Math.random() * 20) + 10;
@@ -231,7 +180,7 @@ function DecryptingOverlay({ inputText }) {
       }, 100);
     });
     return () => intervals.forEach(clearInterval);
-  }, []);
+  }, [inputText]);
 
   return (
     <div
@@ -824,7 +773,7 @@ function DecryptionPanel({ onDecrypt }) {
               <span
                 style={{ color: "#00ff00", fontFamily: MONO, fontSize: 13 }}
               >
-                {stats.probability}% probability
+                {stats.keyLabel}
               </span>
             </div>
             <div style={{ fontSize: 27, fontWeight: 700, letterSpacing: -0.5 }}>
@@ -867,13 +816,25 @@ function DecryptionPanel({ onDecrypt }) {
                   <div
                     style={{
                       height: "100%",
-                      width: `${c.score * 100}%`,
+                      width: `${Math.max(0, Math.min(100, c.score * 100))}%`,
                       background: "#00ff00",
                       borderRadius: 2,
                       transition: "width 0.9s cubic-bezier(0.22,1,0.36,1)",
                     }}
                   />
                 </div>
+                <span
+                  style={{
+                    width: 42,
+                    textAlign: "right",
+                    fontSize: 11,
+                    color: "#00ff00",
+                    fontFamily: MONO,
+                    flexShrink: 0,
+                  }}
+                >
+                  {Math.round(c.score * 100)}%
+                </span>
               </div>
             ))}
           </div>

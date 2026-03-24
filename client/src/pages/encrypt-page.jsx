@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { encrypt } from "../api/encryption"
 import { Card } from "../components/ui/card"
 import { Button } from "../components/ui/button"
@@ -52,10 +52,6 @@ setResult(String(output))
       console.error("Encryption failed:", error)
       setResult("Encryption failed. Please try again.")
     }
-  }
-
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(result)
   }
 
   return (

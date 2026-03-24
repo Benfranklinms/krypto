@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { decrypt } from "../api/decryption"
 import { Card } from "../components/ui/card"
 import { Button } from "../components/ui/button"
 import TextareaInput from "../components/textarea-input"
@@ -15,16 +16,20 @@ export default function DecryptPage() {
   )
   const [recoveredKey, setRecoveredKey] = useState("CRYPTO")
 
-const handleDecrypt = async () => {
+  const handleDecrypt = async () => {
   try {
+    const res = await decrypt({ ciphertext })
 
-    const data = {
-      ciphertext: ciphertext
+    if (res.error) {
+      console.error("Decrypt error:", res.error)
+      return
     }
 
-    const res = await decrypt(data)
-
-    console.log(res)
+    setPredictedCipher(res.cipher || "")
+    setRecoveredKey(res.key || "")
+    setDecryptedText(res.result || "")
+    setConfidence(res.stats?.probability || 97)
+    setAnalysisComplete(true)
 
   } catch (error) {
     console.error("Decrypt error:", error)
@@ -44,14 +49,6 @@ const handleDecrypt = async () => {
       description: "Low IC (≤0.04) suggests polyalphabetic cipher like Vigenère. English plaintext ≈ 0.067.",
     },
   ]
-
-  const handleAutoDetect = () => {
-    setIsAnalyzing(true)
-    setTimeout(() => {
-      setIsAnalyzing(false)
-      setAnalysisComplete(true)
-    }, 2000)
-  }
 
   const handleDetectCipherType = () => {
     setIsAnalyzing(true)
@@ -107,7 +104,7 @@ const handleDecrypt = async () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <Button
-            onClick={handleAutoDetect}
+            onClick={handleDecrypt}
             disabled={isAnalyzing}
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg flex items-center justify-center gap-2"
           >
