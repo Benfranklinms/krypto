@@ -1,5 +1,5 @@
 import wordninja
-from server.services.break_caesar import chi_square
+from services.break_caesar import chi_square
 
 
 VALID_A = [1,3,5,7,9,11,15,17,19,21,23,25]

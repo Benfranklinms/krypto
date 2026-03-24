@@ -1,11 +1,11 @@
 from pathlib import Path
 
 import joblib
-from server.ml.feature_extractor import CipherFeatureExtractor
+from ml.feature_extractor import CipherFeatureExtractor
 
-from server.services.break_caesar import break_caesar
-from server.services.break_affine import break_affine
-from server.services.break_vigenere import break_vigenere
+from services.break_caesar import break_caesar
+from services.break_affine import break_affine
+from services.break_vigenere import break_vigenere
 
 Extractor = CipherFeatureExtractor()
 BASE_DIR = Path(__file__).resolve().parent.parent

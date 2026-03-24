@@ -1,7 +1,7 @@
 from collections import Counter
 import wordninja
-from server.services.break_caesar import break_caesar
-from server.utils.quadgrams.quadgram_score import QuadgramScore
+from services.break_caesar import break_caesar
+from utils.quadgrams.quadgram_score import QuadgramScore
 
 
 def clean_text(text):

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from server.services.auto_decrypt import auto_decrypt
+from services.auto_decrypt import auto_decrypt
 
 decrypt_bp = Blueprint("decrypt", __name__)
 

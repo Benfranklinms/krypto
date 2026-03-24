@@ -1,4 +1,4 @@
-from server.services import caesar, affine, vigenere
+from services import caesar, affine, vigenere
 
 
 def encrypt_cipher(data):
