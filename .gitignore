@@ -1,8 +1,0 @@
-node_modules/
-client/node_modules/
-client/dist/
-__pycache__/
-*.py[cod]
-.DS_Store
-server/.venv/
-server/.pytest_cache/
