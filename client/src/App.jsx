@@ -523,7 +523,7 @@ function KeyFields({ cipher, keys, onChange }) {
 
 // ─── Encryption panel ─────────────────────────────────────────────────────
 function EncryptionPanel({ onEncrypt }) {
-  const [text, setText] = useState("THIS IS A SECRET MESSAGE");
+  const [text, setText] = useState("");
   const [algorithm, setAlgorithm] = useState("caesar");
   const [keys, setKeys] = useState({ shift: "3" });
   const [output, setOutput] = useState("");
