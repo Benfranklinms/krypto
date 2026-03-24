@@ -60,9 +60,11 @@ const CIPHERS = [
 // ─── Radar chart ──────────────────────────────────────────────────────────
 function RadarChart({ data }) {
   if (!data) return null;
-  const radius = 60;
-  const cx = 100;
-  const cy = 100;
+  const width = 240;
+  const height = 232;
+  const radius = 68;
+  const cx = 120;
+  const cy = 116;
   const entries = Object.entries(data);
   const metrics = entries.map(([key, val], i) => ({
     label: key.replace(/([A-Z])/g, " $1").trim(),
@@ -81,10 +83,10 @@ function RadarChart({ data }) {
 
   return (
     <svg
-      width="200"
-      height="200"
-      viewBox="0 0 200 200"
-      style={{ marginTop: 16 }}
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      style={{ marginTop: 16, display: "block", marginInline: "auto" }}
     >
       <defs>
         <style>{`.radar-label { font-size: 9px; fill: #666; font-family: monospace; }`}</style>
@@ -101,8 +103,8 @@ function RadarChart({ data }) {
         />
       ))}
       {metrics.map((m, i) => {
-        const x = cx + radius * 1.25 * Math.cos(m.angle - Math.PI / 2);
-        const y = cy + radius * 1.25 * Math.sin(m.angle - Math.PI / 2);
+        const x = cx + radius * 1.34 * Math.cos(m.angle - Math.PI / 2);
+        const y = cy + radius * 1.34 * Math.sin(m.angle - Math.PI / 2);
         return (
           <text
             key={i}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Krypto favicon">
+  <defs>
+    <linearGradient id="kryptoGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8aff8a" />
+      <stop offset="100%" stop-color="#00ff00" />
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="#050805" stroke="#123012" stroke-width="2" />
+  <path d="M20 14v36" stroke="url(#kryptoGlow)" stroke-width="6" stroke-linecap="round" filter="url(#softGlow)" />
+  <path d="M22 32 42 14" stroke="url(#kryptoGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#softGlow)" />
+  <path d="M22 32 44 50" stroke="url(#kryptoGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#softGlow)" />
+  <circle cx="46" cy="18" r="4" fill="#00ff00" fill-opacity="0.18" stroke="#00ff00" stroke-width="2" />
+  <circle cx="48" cy="48" r="3" fill="#00ff00" />
+</svg>
