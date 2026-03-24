@@ -1,5 +1,5 @@
 from math import gcd
-from utils.inverse import mod_inverse
+from server.utils.inverse import mod_inverse
 
 
 def encrypt(text, a, b):

@@ -1,18 +1,21 @@
-from services import caesar, affine, vigenere
+from server.services import caesar, affine, vigenere
 
 
 def encrypt_cipher(data):
     cipher_type = data.get("cipher")
     text = data.get("text")
 
+    if not text:
+        return {"error": "Missing text"}
+
     if cipher_type == "caesar":
-        return caesar.encrypt(text, int(data.get("shift")))
+        result = caesar.encrypt(text, int(data.get("shift", 3)))
 
     elif cipher_type == "affine":
-        return affine.encrypt(
+        result = affine.encrypt(
             text,
-            int(data.get("a")),
-            int(data.get("b"))
+            int(data.get("a", 5)),
+            int(data.get("b", 8))
         )
     elif cipher_type == "vigenere":
         key = data.get("key")
@@ -23,4 +26,10 @@ def encrypt_cipher(data):
     else:
         return {"error": "Invalid cipher type"}
 
-    return {"result": result}
+    if isinstance(result, dict):
+        return result
+
+    return {
+        "cipher": cipher_type,
+        "result": result
+    }
