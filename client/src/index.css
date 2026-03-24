@@ -1,14 +1,529 @@
-@import "tailwindcss";
+/*
+ * KRYPTO v1.0 — style.css
+ * Compatible with Tailwind CSS v4 (Vite plugin)
+ *
+ * Tailwind v4 drops @tailwind base/components/utilities directives.
+ * @apply with reset utilities (m-0, p-0, etc.) requires @reference.
+ * This file avoids @apply entirely and uses plain CSS for all rules.
+ */
 
-@layer base {
-  :root {
-    --color-background: #ffffff;
-    --color-foreground: #000000;
-    --color-card: #f9fafb;
-    --color-border: #e5e7eb;
-    --color-input: #f3f4f6;
-    --color-muted-foreground: #6b7280;
-    --color-primary: #2563eb;
-    --color-primary-foreground: #ffffff;
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+@reference "tailwindcss";
+
+/* ─── CSS Variables ───────────────────────────────────────────────────────── */
+:root {
+  --green: #00ff00;
+  --green-dim: rgba(0, 255, 0, 0.55);
+  --green-faint: rgba(0, 255, 0, 0.08);
+  --green-border: rgba(0, 255, 0, 0.2);
+  --bg: #000000;
+  --surface: #0d0d0d;
+  --border: #1f1f1f;
+  --text: #bbbbbb;
+  --text-dim: #444444;
+  --text-light: #cccccc;
+  --error: #ff4444;
+  --font-mono: "Share Tech Mono", "Courier New", monospace;
+}
+
+/* ─── Base reset ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.2);
+  border-radius: 2px;
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────────── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scan {
+  from {
+    top: 0;
+  }
+  to {
+    top: 100vh;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinR {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* ─── Root wrapper ────────────────────────────────────────────────────────── */
+.krypto-root {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ─── Scanline overlay ────────────────────────────────────────────────────── */
+.scanline {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 2px;
+  background: linear-gradient(transparent, rgba(0, 255, 0, 0.07), transparent);
+  animation: scan 6s linear infinite;
+}
+
+/* ─── Top navigation bar ──────────────────────────────────────────────────── */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: linear-gradient(#000 70%, transparent);
+}
+
+.topbar__logo {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--green);
+}
+
+.topbar__tabs {
+  display: flex;
+  gap: 8px;
+}
+
+/* ─── Tab buttons ─────────────────────────────────────────────────────────── */
+.tab {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  border-radius: 9999px;
+  padding: 7px 18px;
+  transition: all 0.2s;
+}
+
+.tab--active {
+  background: var(--green);
+  color: #000;
+  font-weight: 700;
+  border: 1px solid var(--green);
+}
+
+.tab--inactive {
+  background: none;
+  color: var(--text-dim);
+  border: 1px solid #1e1e1e;
+}
+
+.tab--inactive:hover {
+  color: var(--green);
+  border-color: rgba(0, 255, 0, 0.27);
+}
+
+/* ─── Main content area ───────────────────────────────────────────────────── */
+.main-content {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 96px 24px 80px;
+}
+
+/* ─── Page title ──────────────────────────────────────────────────────────── */
+.page-title {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  margin-bottom: 48px;
+}
+
+/* ─── Panel layout helpers ────────────────────────────────────────────────── */
+.panel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ─── Section headings ────────────────────────────────────────────────────── */
+.heading {
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+}
+
+.heading--bold {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.heading--mono {
+  font-size: 17px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.heading-arrow {
+  color: var(--green);
+  margin-right: 6px;
+}
+
+/* ─── Shared field base ───────────────────────────────────────────────────── */
+.field-base {
+  width: 100%;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 13px 16px;
+  box-sizing: border-box;
+}
+
+.field-base:focus {
+  border-color: rgba(0, 255, 0, 0.33);
+}
+
+.field-base::placeholder {
+  color: var(--text-dim);
+}
+
+.field-textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+/* ─── Key fields group ────────────────────────────────────────────────────── */
+.key-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ─── Output box variants ─────────────────────────────────────────────────── */
+.output-box {
+  min-height: 64px;
+  word-break: break-all;
+}
+
+.output-box--error {
+  color: var(--error);
+}
+.output-box--success {
+  color: var(--green);
+}
+.output-box--empty {
+  color: var(--text-dim);
+}
+
+/* ─── Primary button ──────────────────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  padding: 15px 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  background: var(--green);
+  color: #000;
+}
+
+.btn-primary:hover {
+  opacity: 0.8;
+}
+
+.btn-primary--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn-primary--disabled:hover {
+  opacity: 0.5;
+}
+
+/* ─── Cipher Dropdown ─────────────────────────────────────────────────────── */
+.dropdown {
+  position: relative;
+  user-select: none;
+}
+
+.dropdown__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdown__trigger--open {
+  border-color: rgba(0, 255, 0, 0.33);
+}
+
+.dropdown__tag {
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.05em;
+  margin-left: 10px;
+}
+
+.dropdown__chevron {
+  display: inline-block;
+  transition: transform 0.2s;
+  color: var(--green);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+.dropdown__chevron--open {
+  transform: rotate(180deg);
+}
+
+.dropdown__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.08);
+  animation: fadeIn 0.15s ease;
+}
+
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.15s;
+  padding: 11px 16px;
+}
+
+.dropdown__item:hover {
+  background: rgba(0, 255, 0, 0.09);
+}
+.dropdown__item--selected {
+  background: rgba(0, 255, 0, 0.06);
+}
+.dropdown__item--bordered {
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.dropdown__item-tag {
+  font-size: 10px;
+  color: #555;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Decrypting Overlay ──────────────────────────────────────────────────── */
+.decrypting-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 0;
+}
+
+.decrypting-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.decrypting-line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--green);
+  letter-spacing: 0.2em;
+}
+
+.decrypting-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(0, 255, 0, 0.4);
+  letter-spacing: 0.2em;
+  margin-top: 8px;
+  animation: blink 1s step-end infinite;
+}
+
+/* ─── Statistics section ──────────────────────────────────────────────────── */
+.stats-section {
+  gap: 16px;
+  animation: fadeIn 0.4s ease;
+}
+
+.stats-cipher {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats-cipher__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.stats-cipher__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.12em;
+}
+
+.stats-cipher__prob {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--green);
+}
+
+.stats-cipher__name {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Score bars ──────────────────────────────────────────────────────────── */
+.stats-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stats-bar__label {
+  flex-shrink: 0;
+  width: 72px;
+  font-size: 11px;
+  color: #888;
+  font-family: var(--font-mono);
+}
+
+.stats-bar__track {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 2px;
+  height: 3px;
+  background: #1a1a1a;
+}
+
+.stats-bar__fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--green);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Radar chart wrapper ─────────────────────────────────────────────────── */
+.radar-wrapper {
+  max-width: 300px;
+  margin: 8px auto 0;
+}
+
+/* ─── Utility helpers ─────────────────────────────────────────────────────── */
+.text-green {
+  color: var(--green);
+}
+.text-dim {
+  color: var(--text-dim);
+}
+.text-light {
+  color: var(--text-light);
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.blink-cursor {
+  color: var(--green);
+  animation: blink 1s step-end infinite;
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease;
+}
+
+.italic {
+  font-style: italic;
 }
