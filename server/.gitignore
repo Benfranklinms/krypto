@@ -63,3 +63,7 @@ Thumbs.db
 # --------------------
 tmp/
 temp/
+__pycache__/
+*.pyc
+venv/
+
