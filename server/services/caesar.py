@@ -6,7 +6,5 @@ def encrypt(text, shift):
         if char.isalpha():
             base = 65 if char.isupper() else 97
             result += chr((ord(char) - base + shift) % 26 + base)
-        else:
-            result += char
 
     return result

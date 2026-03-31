@@ -13,7 +13,6 @@ def encrypt(text, a, b):
             base = 65 if char.isupper() else 97
             x = ord(char) - base
             result += chr(((a * x + b) % 26) + base)
-        else:
-            result += char
+    
 
     return result
