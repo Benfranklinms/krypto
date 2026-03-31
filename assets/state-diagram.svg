@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1250" viewBox="0 0 1200 1250">
+  <defs>
+    <style>
+      .page { fill: #ffffff; }
+      .title { font: 700 26px "Times New Roman", serif; fill: #111111; }
+      .caption { font: 400 22px "Times New Roman", serif; fill: #222222; }
+      .state { fill: none; stroke: #222222; stroke-width: 1.8; }
+      .state-text { font: 400 17px Arial, sans-serif; fill: #222222; text-anchor: middle; dominant-baseline: middle; }
+      .line { stroke: #222222; stroke-width: 1.7; fill: none; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#222222"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="1250" class="page"/>
+  <text x="70" y="70" class="title">4.1.4 State Diagram</text>
+
+  <!-- Initial state -->
+  <circle cx="600" cy="120" r="16" fill="#000000"/>
+
+  <!-- Waiting -->
+  <rect x="515" y="170" width="170" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="204" class="state-text">Waiting for</text>
+  <text x="600" y="226" class="state-text">user input</text>
+
+  <!-- Input -->
+  <rect x="500" y="290" width="200" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="324" class="state-text">Entering plaintext</text>
+  <text x="600" y="346" class="state-text">or ciphertext</text>
+
+  <!-- Select mode -->
+  <rect x="515" y="410" width="170" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="444" class="state-text">Selecting mode</text>
+  <text x="600" y="466" class="state-text">(encrypt/decrypt)</text>
+
+  <!-- Validation -->
+  <rect x="520" y="530" width="160" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="564" class="state-text">Validating</text>
+  <text x="600" y="586" class="state-text">request</text>
+
+  <!-- Branch states -->
+  <rect x="255" y="665" width="235" height="88" rx="6" ry="6" class="state"/>
+  <text x="372" y="703" class="state-text">Encrypting in backend</text>
+  <text x="372" y="727" class="state-text">(Caesar / Affine / Vigenere)</text>
+
+  <rect x="710" y="665" width="235" height="88" rx="6" ry="6" class="state"/>
+  <text x="827" y="692" class="state-text">Detecting cipher type</text>
+  <text x="827" y="716" class="state-text">and decrypting</text>
+  <text x="827" y="740" class="state-text">using ML + breaker</text>
+
+  <!-- Merge result -->
+  <rect x="505" y="830" width="190" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="864" class="state-text">Generating result</text>
+  <text x="600" y="886" class="state-text">response</text>
+
+  <!-- Display -->
+  <rect x="515" y="950" width="170" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="984" class="state-text">Displaying result</text>
+  <text x="600" y="1006" class="state-text">to user</text>
+
+  <!-- Final user action -->
+  <rect x="510" y="1070" width="180" height="68" rx="6" ry="6" class="state"/>
+  <text x="600" y="1104" class="state-text">Session complete</text>
+  <text x="600" y="1126" class="state-text">or new request</text>
+
+  <!-- Final state -->
+  <circle cx="600" cy="1205" r="18" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+  <circle cx="600" cy="1205" r="9" fill="#000000"/>
+
+  <!-- Connectors -->
+  <line x1="600" y1="136" x2="600" y2="170" class="line" marker-end="url(#arrow)"/>
+  <line x1="600" y1="238" x2="600" y2="290" class="line" marker-end="url(#arrow)"/>
+  <line x1="600" y1="358" x2="600" y2="410" class="line" marker-end="url(#arrow)"/>
+  <line x1="600" y1="478" x2="600" y2="530" class="line" marker-end="url(#arrow)"/>
+
+  <!-- split -->
+  <line x1="600" y1="598" x2="600" y2="630" class="line"/>
+  <line x1="372" y1="630" x2="827" y2="630" class="line"/>
+  <line x1="372" y1="630" x2="372" y2="665" class="line" marker-end="url(#arrow)"/>
+  <line x1="827" y1="630" x2="827" y2="665" class="line" marker-end="url(#arrow)"/>
+
+  <!-- merge -->
+  <line x1="372" y1="753" x2="372" y2="790" class="line"/>
+  <line x1="827" y1="753" x2="827" y2="790" class="line"/>
+  <line x1="372" y1="790" x2="827" y2="790" class="line"/>
+  <line x1="600" y1="790" x2="600" y2="830" class="line" marker-end="url(#arrow)"/>
+
+  <line x1="600" y1="898" x2="600" y2="950" class="line" marker-end="url(#arrow)"/>
+  <line x1="600" y1="1018" x2="600" y2="1070" class="line" marker-end="url(#arrow)"/>
+  <line x1="600" y1="1138" x2="600" y2="1187" class="line" marker-end="url(#arrow)"/>
+
+  <text x="600" y="1238" text-anchor="middle" class="caption">Figure 4.4: State Diagram</text>
+</svg>
