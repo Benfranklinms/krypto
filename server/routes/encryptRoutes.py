@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from controllers.cipherController import encrypt_cipher
+from services.encrypt_cipher import encrypt_cipher
 
 cipher_bp = Blueprint("cipher", __name__)
 

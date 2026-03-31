@@ -2,8 +2,8 @@ from pathlib import Path
 import sys
 from flask import Flask
 from flask_cors import CORS
-from routes.cipherRoutes import cipher_bp
-from routes.decryptRoutes import decrypt_bp
+from routes.encryptRoutes import cipher_bp
+from routes.decryptRoutes import decrypt, decrypt_bp
 
 SERVER_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SERVER_DIR.parent
