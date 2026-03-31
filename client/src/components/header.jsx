@@ -22,7 +22,7 @@ export default function Header() {
           <div className="flex gap-2">
             <Link
               to="/"
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-all sm:px-4 sm:py-2 sm:text-base ${
                 activeTab === "encrypt" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
               }`}
             >
@@ -30,7 +30,7 @@ export default function Header() {
             </Link>
             <Link
               to="/decrypt"
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-all sm:px-4 sm:py-2 sm:text-base ${
                 activeTab === "decrypt" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
               }`}
             >

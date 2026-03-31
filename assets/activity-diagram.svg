@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs>
+    <style>
+      .page { fill: #ffffff; }
+      .title { font: 700 28px "Times New Roman", serif; fill: #111111; }
+      .caption { font: 400 22px "Times New Roman", serif; fill: #222222; }
+      .frame { fill: none; stroke: #222222; stroke-width: 2; }
+      .lane-title { font: 700 22px Arial, sans-serif; fill: #222222; letter-spacing: 0.5px; }
+      .label { font: 400 18px Arial, sans-serif; fill: #222222; }
+      .guard { font: 400 16px Arial, sans-serif; fill: #222222; }
+      .box { fill: none; stroke: #222222; stroke-width: 2; rx: 6; ry: 6; }
+      .diamond { fill: none; stroke: #222222; stroke-width: 2; }
+      .box-text { font: 400 18px Arial, sans-serif; fill: #222222; text-anchor: middle; dominant-baseline: middle; }
+      .arrow { fill: none; stroke: #222222; stroke-width: 2; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#222222"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="1500" class="page"/>
+
+  <text x="80" y="75" class="title">4.1.3 Activity Diagram</text>
+
+  <!-- Swimlane frame -->
+  <rect x="240" y="120" width="720" height="1220" class="frame"/>
+  <line x1="600" y1="120" x2="600" y2="1340" class="frame"/>
+  <line x1="240" y1="180" x2="960" y2="180" class="frame"/>
+
+  <text x="420" y="158" text-anchor="middle" class="lane-title">USER</text>
+  <text x="780" y="158" text-anchor="middle" class="lane-title">SYSTEM</text>
+
+  <!-- Start -->
+  <text x="300" y="235" class="label">Start</text>
+  <circle cx="400" cy="228" r="20" fill="#000000"/>
+  <circle cx="400" cy="228" r="7" fill="#ffffff"/>
+
+  <!-- Shared steps -->
+  <rect x="290" y="285" width="220" height="90" class="box"/>
+  <text x="400" y="330" class="box-text">Open Krypto</text>
+
+  <rect x="290" y="415" width="220" height="90" class="box"/>
+  <text x="400" y="452" class="box-text">Choose operation</text>
+  <text x="400" y="478" class="box-text">(Encrypt / Decrypt)</text>
+
+  <polygon points="400,535 460,590 400,645 340,590" class="diamond"/>
+  <text x="400" y="592" class="box-text">Mode?</text>
+
+  <!-- Encrypt branch -->
+  <rect x="290" y="700" width="220" height="100" class="box"/>
+  <text x="400" y="738" class="box-text">Enter plaintext</text>
+  <text x="400" y="766" class="box-text">Choose cipher and key(s)</text>
+
+  <rect x="670" y="700" width="220" height="100" class="box"/>
+  <text x="780" y="738" class="box-text">Validate input and</text>
+  <text x="780" y="766" class="box-text">build encrypt request</text>
+
+  <rect x="670" y="845" width="220" height="100" class="box"/>
+  <text x="780" y="883" class="box-text">Run selected cipher</text>
+  <text x="780" y="911" class="box-text">(Caesar / Affine / Vigenere)</text>
+
+  <rect x="290" y="845" width="220" height="100" class="box"/>
+  <text x="400" y="883" class="box-text">View ciphertext</text>
+  <text x="400" y="911" class="box-text">result</text>
+
+  <!-- Decrypt branch -->
+  <rect x="290" y="1040" width="220" height="100" class="box"/>
+  <text x="400" y="1078" class="box-text">Enter ciphertext</text>
+  <text x="400" y="1106" class="box-text">Submit for decryption</text>
+
+  <rect x="670" y="1040" width="220" height="100" class="box"/>
+  <text x="780" y="1078" class="box-text">Extract features and</text>
+  <text x="780" y="1106" class="box-text">predict cipher type</text>
+
+  <rect x="670" y="1185" width="220" height="100" class="box"/>
+  <text x="780" y="1223" class="box-text">Run matching breaker</text>
+  <text x="780" y="1251" class="box-text">and return plaintext + key</text>
+
+  <rect x="290" y="1185" width="220" height="100" class="box"/>
+  <text x="400" y="1223" class="box-text">View plaintext, key,</text>
+  <text x="400" y="1251" class="box-text">and prediction details</text>
+
+  <!-- End -->
+  <line x1="400" y1="1285" x2="400" y2="1320" class="arrow" marker-end="url(#arrow)"/>
+  <circle cx="400" cy="1365" r="16" fill="#000000"/>
+
+  <!-- Connectors -->
+  <line x1="400" y1="248" x2="400" y2="285" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="400" y1="375" x2="400" y2="415" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="400" y1="505" x2="400" y2="535" class="arrow" marker-end="url(#arrow)"/>
+
+  <!-- Encrypt path -->
+  <line x1="400" y1="645" x2="400" y2="700" class="arrow" marker-end="url(#arrow)"/>
+  <text x="424" y="680" class="guard">[encrypt]</text>
+  <line x1="510" y1="750" x2="670" y2="750" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="780" y1="800" x2="780" y2="845" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="670" y1="895" x2="510" y2="895" class="arrow" marker-end="url(#arrow)"/>
+
+  <!-- Decrypt path -->
+  <path d="M 460 590 L 560 590 L 560 990 L 400 990 L 400 1040" class="arrow" marker-end="url(#arrow)"/>
+  <text x="575" y="850" class="guard">[decrypt]</text>
+  <line x1="510" y1="1090" x2="670" y2="1090" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="780" y1="1140" x2="780" y2="1185" class="arrow" marker-end="url(#arrow)"/>
+  <line x1="670" y1="1235" x2="510" y2="1235" class="arrow" marker-end="url(#arrow)"/>
+
+  <text x="600" y="1415" text-anchor="middle" class="caption">Figure 4.3: Activity Diagram</text>
+</svg>

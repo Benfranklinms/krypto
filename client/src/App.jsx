@@ -899,7 +899,7 @@ export default function KryptoApp({ onEncrypt, onDecrypt }) {
               fontWeight: 700,
             }}
           >
-            &gt; KRYPTO v1.0
+            &gt; KRYPTO
           </span>
           <div style={{ display: "flex", gap: 8 }}>
             {["encrypt", "decrypt"].map((t) => (
