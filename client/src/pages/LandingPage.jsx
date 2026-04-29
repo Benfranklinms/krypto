@@ -826,7 +826,7 @@ export default function LandingPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.5, duration: 0.6 }}
               >
-                Military-grade encryption &amp; AI-powered decryption.
+                Classical cipher encryption &amp; Automatic decryption.
                 <br />
                 Break any cipher. Protect any message.
               </motion.p>
